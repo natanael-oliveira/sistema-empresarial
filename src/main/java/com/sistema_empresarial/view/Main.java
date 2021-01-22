@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import com.sistema_empresarial.tableModel.FuncionarioTableModel;
+import com.sistema_empresarial.tableModel.FuncionarioTM;
 import com.sistema_empresarial.util.JPAConnector;
 
 import java.awt.Color;
@@ -21,6 +21,7 @@ import javax.swing.JSeparator;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JProgressBar;
+import java.awt.SystemColor;
 
 public class Main extends JFrame {
 
@@ -30,9 +31,6 @@ public class Main extends JFrame {
 	private JProgressBar progressBar;
 	private JLabel lblNewLabel_6;
 	
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -46,10 +44,6 @@ public class Main extends JFrame {
 			}
 		});
 	}
-
-	/**
-	 * Create the frame.
-	 */
 	public Main() {
 		setTitle("Sistema Empresarial");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,6 +76,7 @@ public class Main extends JFrame {
 
 //		
 		progressBar = new JProgressBar();
+		progressBar.setBackground(SystemColor.control);
 		progressBar.setIndeterminate(true);
 		progressBar.setBounds(46, 158, 400, 10);
 		contentPane.add(progressBar);
@@ -90,7 +85,7 @@ public class Main extends JFrame {
 		LoadString loadString = new LoadString();
 		loadString.start();
 //		
-		lblNewLabel_6 = new JLabel("Conectando...");
+		lblNewLabel_6 = new JLabel("Conectando");
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblNewLabel_6.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_6.setBounds(46, 136, 400, 14);
@@ -133,7 +128,7 @@ public class Main extends JFrame {
 					progressBar.setString(progressBar.getValue()+"%");
 				}
 				sleep(1500);
-				LoginAdmin admin = new LoginAdmin();
+				LoginUsuario admin = new LoginUsuario();
 				admin.setVisible(true);
 				dispose();
 			} catch (InterruptedException e) {

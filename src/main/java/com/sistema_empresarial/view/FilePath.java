@@ -27,36 +27,17 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import java.awt.Color;
+import javax.swing.JProgressBar;
+import javax.swing.SwingConstants;
 
 public class FilePath extends JFrame {
-	
 	private JPanel contentPane;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					FilePath frame = new FilePath();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
+	
 	@SuppressWarnings("static-access")
 	public FilePath() {
-		setResizable(false);
 		setTitle("Gerar Relatórios");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 337, 137);
+		setBounds(100, 100, 337, 139);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -72,30 +53,7 @@ public class FilePath extends JFrame {
 		comboBox.setModel(new DefaultComboBoxModel(nameRelatorios.toArray()));
 		comboBox.setBounds(94, 24, 217, 25);
 		contentPane.add(comboBox);
-		
-		JButton btnNewButton = new JButton("Gerar");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				FileChooser fileChooser = new FileChooser("Gerar Relatório","pdf","Relatório.pdf");
-				int i = fileChooser.fileSave().showSaveDialog(null);
-				if(i == 0) {
-					RelatorioResurce relatorioResurce = new RelatorioResurce();
-					relatorioResurce.gerar(comboBox.getSelectedIndex(),fileChooser.getFileChooser().getSelectedFile().getPath());
-					dispose();
-				}else {
-					System.out.println("cancelado");
-				}
-			}
-		});
-		btnNewButton.setBounds(212, 60, 99, 23);
-		contentPane.add(btnNewButton);
-		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(FilePath.class.getResource("/icons/file_75.png")));
-		lblNewLabel.setBounds(10, 11, 74, 75);
-		contentPane.add(lblNewLabel);
-		
-		JButton btnCancelar = new JButton("Cancelar");
+		final JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -104,5 +62,23 @@ public class FilePath extends JFrame {
 		btnCancelar.setBounds(94, 60, 99, 23);
 		contentPane.add(btnCancelar);
 
+		final JButton btnNewButton = new JButton("Gerar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				RelatorioResurce relatorioResurce = new RelatorioResurce();
+				relatorioResurce.showSaveDialog(comboBox.getSelectedIndex());
+				
+			}
+		});
+		btnNewButton.setBounds(212, 60, 99, 23);
+		contentPane.add(btnNewButton);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon(FilePath.class.getResource("/icons/file_75.png")));
+		lblNewLabel.setBounds(10, 14, 74, 75);
+		contentPane.add(lblNewLabel);
+		
+		
 	}
 }

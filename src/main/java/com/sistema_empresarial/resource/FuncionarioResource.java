@@ -7,9 +7,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 import com.sistema_empresarial.model.Funcionario;
-import com.sistema_empresarial.tableModel.FuncionarioTableModel;
+import com.sistema_empresarial.tableModel.FuncionarioTM;
 import com.sistema_empresarial.util.JPAConnector;
+import com.sistema_empresarial.view.FuncionarioUpdate;
 
 public class FuncionarioResource {
 	
@@ -62,5 +65,18 @@ public class FuncionarioResource {
 		manager.getTransaction().begin();
 		manager.merge(funcionario);
 		manager.getTransaction().commit();
+	}
+	public void update(Long id,String nome,String Cargo,int indexSelected) {
+		Funcionario funcionario = getById(id);
+		funcionario.setName(nome);
+		funcionario.setJob(Cargo);
+		merge(funcionario);
+		System.out.println("Funcinário Atualizado com sucesso!");
+		FuncionarioTM.getInstance().updateRow(funcionario,indexSelected);
+	}
+	public void exibirViewUpdate(Long id,int indexSelected) {
+		Funcionario funcionario = getById(id);
+		FuncionarioUpdate funcionarioUpdate = new FuncionarioUpdate(id,funcionario.getName(),funcionario.getJob(),indexSelected);
+		funcionarioUpdate.setVisible(true);
 	}
 }

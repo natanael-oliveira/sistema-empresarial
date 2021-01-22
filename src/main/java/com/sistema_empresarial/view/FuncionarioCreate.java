@@ -9,7 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.sistema_empresarial.model.Funcionario;
 import com.sistema_empresarial.resource.FuncionarioResource;
-import com.sistema_empresarial.tableModel.FuncionarioTableModel;
+import com.sistema_empresarial.tableModel.FuncionarioTM;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -27,31 +27,12 @@ public class FuncionarioCreate extends JFrame {
 	private JTextField textField_name;
 	FuncionarioResource funcionarioResource = new FuncionarioResource();
 	private JTextField textField_cargo;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					
-					FuncionarioCreate frame = new FuncionarioCreate();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
+	
 	public FuncionarioCreate() {
 		
 		setTitle("Cadastrar Funcionário");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 330, 217);
+		setBounds(100, 100, 332, 217);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -89,7 +70,7 @@ public class FuncionarioCreate extends JFrame {
 				funcionario.setName(textField_name.getText());
 				funcionario.setJob(textField_cargo.getText());
 				funcionarioResource.save(funcionario);
-				FuncionarioTableModel.getInstance().addRow(funcionario);
+				FuncionarioTM.getInstance().addRow(funcionario);
 				clearCampos();
 				dispose();
 			}

@@ -8,22 +8,22 @@ import javax.swing.table.AbstractTableModel;
 import com.sistema_empresarial.model.Funcionario;
 import com.sistema_empresarial.resource.FuncionarioResource;
 
-public class FuncionarioTableModel extends AbstractTableModel{
+public class FuncionarioTM extends AbstractTableModel{
 	
 	private FuncionarioResource funcionarioResource = new FuncionarioResource();
 	private static final long serialVersionUID = 1L;
-	private static FuncionarioTableModel instance;
+	private static FuncionarioTM instance;
 	private List<Funcionario> rows;
 	private String[] columns = {"ID","NOME","CARGO"};
 	
-	public static FuncionarioTableModel getInstance() {
+	public static FuncionarioTM getInstance() {
 		if(instance == null) {
-			return instance = new FuncionarioTableModel();
+			return instance = new FuncionarioTM();
 		}
 		return instance;
 	}
 	
-	public FuncionarioTableModel(){
+	public FuncionarioTM(){
 		build();
 	}
 	

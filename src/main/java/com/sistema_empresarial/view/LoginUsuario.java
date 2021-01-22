@@ -7,11 +7,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.sistema_empresarial.resource.AdminResource;
+import com.sistema_empresarial.resource.UsuarioResource;
 import com.sistema_empresarial.util.JPAConnector;
 
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -21,14 +22,14 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class LoginAdmin extends JFrame {
+public class LoginUsuario extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
 	private JPasswordField passwordField;
 
-	public LoginAdmin() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public LoginUsuario() {
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 294, 274);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
@@ -39,7 +40,7 @@ public class LoginAdmin extends JFrame {
 		JLabel lblNewLabel = new JLabel("Administrador");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setIcon(new ImageIcon(LoginAdmin.class.getResource("/icons/user_circle.png")));
+		lblNewLabel.setIcon(new ImageIcon(LoginUsuario.class.getResource("/icons/user_circle.png")));
 		lblNewLabel.setBounds(20, 11, 235, 35);
 		contentPane.add(lblNewLabel);
 		
@@ -65,11 +66,12 @@ public class LoginAdmin extends JFrame {
 		JButton btnNewButton = new JButton("Entrar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AdminResource adminResource = new AdminResource();
-				if(adminResource.login(textField.getText(), passwordField.getText())) {
+				UsuarioResource usuarioResource = new UsuarioResource();
+				if(usuarioResource.login(textField.getText(), passwordField.getText())) {
 					dispose();
+				}else {
+					JOptionPane.showMessageDialog(null,"Usuário ou Senha incorreto(s)!");
 				}
-				
 			}
 		});
 		btnNewButton.setBounds(145, 175, 91, 25);

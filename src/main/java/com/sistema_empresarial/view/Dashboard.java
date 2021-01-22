@@ -10,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.sistema_empresarial.resource.FuncionarioResource;
-import com.sistema_empresarial.tableModel.FuncionarioTableModel;
+import com.sistema_empresarial.tableModel.FuncionarioTM;
 import com.sistema_empresarial.util.JPAConnector;
 
 import javax.swing.JTable;
@@ -76,26 +76,7 @@ public class Dashboard extends JFrame {
 	private FuncionarioResource funcionarioResource = new FuncionarioResource();
 	FuncionarioCreate cfd = new FuncionarioCreate();
 	private JTextField textField;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					UIManager.setLookAndFeel(new FlatLightLaf());
-					Dashboard frame = new Dashboard();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	/**
-	 * Create the frame.
-	 */
 	public Dashboard() {
 		setResizable(false);
 		setTitle("Dashboard de Funcionários");
@@ -121,8 +102,8 @@ public class Dashboard extends JFrame {
 		final JButton btnNewButton_1_1 = new JButton("");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(funcionarioResource.remove(FuncionarioTableModel.getInstance().getColumnId(table.getSelectedRow()))) {
-					FuncionarioTableModel.getInstance().removeRow(table.getSelectedRow());
+				if(funcionarioResource.remove(FuncionarioTM.getInstance().getColumnId(table.getSelectedRow()))) {
+					FuncionarioTM.getInstance().removeRow(table.getSelectedRow());
 				}
 			}
 		});
@@ -134,6 +115,12 @@ public class Dashboard extends JFrame {
 		layeredPane.add(btnNewButton_1_1);
 		
 		final JButton btnNewButton_1_1_1 = new JButton("");
+		btnNewButton_1_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FuncionarioResource funcionarioResource = new FuncionarioResource();
+				funcionarioResource.exibirViewUpdate(FuncionarioTM.getInstance().getColumnId(table.getSelectedRow()),table.getSelectedRow());
+			}
+		});
 		btnNewButton_1_1_1.setEnabled(false);
 		btnNewButton_1_1_1.setIcon(new ImageIcon(Dashboard.class.getResource("/icons/edit.png")));
 		btnNewButton_1_1_1.setBackground(Color.WHITE);
@@ -158,7 +145,7 @@ public class Dashboard extends JFrame {
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
-		table.setModel(FuncionarioTableModel.getInstance());
+		table.setModel(FuncionarioTM.getInstance());
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -173,7 +160,7 @@ public class Dashboard extends JFrame {
 		progressBar = new JProgressBar();
 		progressBar.setValue(0);
 		progressBar.setStringPainted(false);
-		progressBar.setBounds(128, 350, 357, 16);
+		progressBar.setBounds(128, 350, 357, 12);
 		contentPane.add(progressBar);
 		
 		JButton btnNewButton_2 = new JButton("Atualizar");
@@ -181,7 +168,7 @@ public class Dashboard extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Progress p = new Progress();
 				p.start();
-				table.setModel(FuncionarioTableModel.getInstance());
+				table.setModel(FuncionarioTM.getInstance());
 			}
 		});
 		btnNewButton_2.setBounds(18, 346, 99, 23);
@@ -205,6 +192,9 @@ public class Dashboard extends JFrame {
 		btnNewButton_1_1_1_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JPAConnector.getInstance().closeConnection();
+				LoginUsuario loginUsuario = new LoginUsuario();
+				loginUsuario.setVisible(true);
+				dispose();
 			}
 		});
 		btnNewButton_1_1_1_1_1.setIcon(new ImageIcon(Dashboard.class.getResource("/icons/logout.png")));
@@ -221,7 +211,7 @@ public class Dashboard extends JFrame {
 		textField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				FuncionarioTableModel.getInstance().buildFilter(textField.getText());
+				FuncionarioTM.getInstance().buildFilter(textField.getText());
 			}
 		});
 		textField.setColumns(10);
@@ -240,13 +230,17 @@ public class Dashboard extends JFrame {
 		public void run() {
 			super.run();
 			try {
+				progressBar.setIndeterminate(true);
+				FuncionarioTM funcionarioTableModel = new FuncionarioTM();
+				funcionarioTableModel.build();
+				progressBar.setIndeterminate(false);
 				progressBar.setStringPainted(true);
 				while(progressBar.getValue() < 100) {
 					sleep(3);
 					progressBar.setValue(progressBar.getValue()+1);
 					progressBar.setString(progressBar.getValue()+"%");
 					if(progressBar.getValue() == 50) {
-						FuncionarioTableModel.getInstance().build();
+						FuncionarioTM.getInstance().build();
 					}
 				}
 				sleep(1000);
